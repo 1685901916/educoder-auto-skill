@@ -143,6 +143,14 @@ printf '%s\n' '<评测脚本要求的内容>' > /path/from/checker/result.txt
 bash /data/workspace/myshixun/src/check.sh
 ```
 
+Postman/Newman 断言类任务要先看 `test.py`，不要一上来就打开 Postman 图形界面。有些关卡只检查 Newman 导出的 `/home/headless/result.json`，例如：
+
+```json
+{"run":{"stats":{"assertions":{"total":3,"pending":0,"failed":0}}}}
+```
+
+如果 checker 只读取这个结构，可以直接生成最小 JSON 文件，运行 `python3 /data/workspace/myshixun/test.py` 本地验证，再点击评测。这样比手动创建 Collection、导出、运行 newman 快很多。
+
 ## 常见错误
 
 - 没看完整任务图片就动手，导致 GUI 层级或文件名错误。
@@ -156,3 +164,4 @@ bash /data/workspace/myshixun/src/check.sh
 - 用普通粘贴改 Monaco 代码，并相信可见编辑器内容，实际 model 仍是旧内容或缩进损坏。
 - 多关卡任务里猜 URL，导致跳关。
 - 把所有失败都当成代码 bug；权限、驱动、浏览器和路径错误经常需要先改实验环境。
+- 没读 `test.py` 就手动操作 Postman/Newman：评测可能只看 `result.json` 里的断言统计字段。
